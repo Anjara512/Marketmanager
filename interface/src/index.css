@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.input-dark {
+  @apply bg-zinc-800 text-white border border-white  md:shrink shrink text-sm font-medium px-4 py-2 rounded-md w-full;
+}
