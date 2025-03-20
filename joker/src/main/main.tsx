@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Header from "./Header";
 import { Toaster, toast } from "sonner";
 import { useTheme, useToggleCard } from "../store/zustand";
@@ -9,7 +9,7 @@ import { Typewriter, Cursor } from "react-simple-typewriter";
 
 const Main = () => {
   const { toasting, theme } = useTheme();
-  const { card } = useToggleCard();
+  const { card, toggleCard } = useToggleCard();
   const nav = useNavigate();
   useEffect(() => {
     if (toasting.content !== " ") toast.success(toasting.content);
@@ -30,7 +30,8 @@ const Main = () => {
         });
         if (response) {
           localStorage.setItem("token", response.data);
-          nav("/connect");
+          nav("/connect/product");
+          toggleCard();
         }
       } catch (error) {
         console.error(error);

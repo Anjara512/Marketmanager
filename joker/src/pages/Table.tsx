@@ -2,11 +2,11 @@ import React, { useActionState, useEffect, useState } from "react";
 import { cn } from "../lib/utils";
 import Header from "../main/Header";
 import Nav from "../components/nav";
-import axios from "axios";
 import { Products } from "./produit";
 import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import { useTheme } from "../store/zustand";
+import { API } from "../lib/cappApi";
 
 const Table = () => {
   const [products, setproducts] = useState<Products[]>([]);
@@ -17,20 +17,16 @@ const Table = () => {
   const [price, setprice] = useState<number>();
   const [taux, settaux] = useState<number>();
 
-  const token = localStorage.getItem("token");
   const nav = useNavigate();
   useEffect(() => {
     const getProduct = async () => {
-      const response = await axios.get(
-        "http://localhost:7000/user/getProduct",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await API.get("/user/getProduct");
       if (response) {
         setproducts(response.data);
       }
     };
     getProduct();
-  }, [products, token, nav]);
+  }, [products, nav]);
 
   const getChoice = (e: React.ChangeEvent<HTMLInputElement>) => {
     setsearcher(e.target.value);
@@ -47,11 +43,12 @@ const Table = () => {
     const createdAt = new Date();
     if (name && taux) {
       try {
-        const response = await axios.post(
-          "http://localhost:7000/user/postArchive",
-          { name, taux, price, createdAt },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const response = await API.post("/user/postArchive", {
+          name,
+          taux,
+          price,
+          createdAt,
+        });
 
         if (response) {
           setname("");
@@ -107,7 +104,7 @@ const Table = () => {
                 placeholder="Rechercher un produit"
                 name=""
                 className={cn(
-                  "px-4 pl-10 text-white py-4 rounded-md w-3/4 bg-zinc-950 font-medium text-sm focus:ring-4 ring-blue-500 focus:outline-none"
+                  "px-4 pl-10 text-white py-6 rounded-md w-3/4 bg-gray-950 font-medium text-sm focus:ring-4 ring-blue-500 focus:outline-none"
                 )}
                 id=""
               />
@@ -136,7 +133,7 @@ const Table = () => {
             className={cn(
               "md:w-62 ww-max p-5 text-slate-50  mt-4 flex flex-col gap-5 rounded-md  border border-zinc-500",
               {
-                "bg-zinc-100 text-zinc-800": theme !== "dark",
+                "bg-stone-50 text-zinc-800": theme !== "dark",
               }
             )}
           >
@@ -146,7 +143,12 @@ const Table = () => {
               value={name}
               onChange={(e) => setname(e.target.value)}
               name=""
-              className="input-dark"
+              className={cn(
+                "w-max px-4 py-2 focus:ring-4 ring-blue-700 focus:outline-none text-white font-mono bg-gray-950 rounded-md cursor-pointer ",
+                {
+                  "bg-zinc-200 text-black": theme !== "dark",
+                }
+              )}
               id=""
             />
             quantité
@@ -157,15 +159,24 @@ const Table = () => {
                 settaux(() => Number(e.target.value));
               }}
               name=""
-              className="input-dark"
-              id=""
+              className={cn(
+                "w-max px-4 py-2 focus:ring-4 ring-blue-700 focus:outline-none text-white font-mono bg-gray-950 rounded-md cursor-pointer ",
+                {
+                  "bg-stone-200 text-black": theme !== "dark",
+                }
+              )}
             />
             <div className="flex flex-row gap-2">
               <label htmlFor="">Net a payer</label>
               <p className="text-white ">{Number(price)}ar</p>
             </div>
             <button
-              className="w-max px-4 py-2 focus:ring-2 ring-blue-700 focus:outline-none text-white font-mono bg-blue-500 rounded-md cursor-pointer "
+              className={cn(
+                "w-max px-4 py-2 focus:ring-4 ring-blue-700 focus:outline-none text-white font-mono bg-gray-800 rounded-md cursor-pointer ",
+                {
+                  "bg-slate-200 text-black": theme !== "dark",
+                }
+              )}
               disabled={isPending}
             >
               vendre

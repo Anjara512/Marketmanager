@@ -10,6 +10,7 @@ export default function AddNewProduct() {
   const { theme } = useTheme();
   const token = localStorage.getItem("token");
   const [image, setImage] = useState<string | ArrayBuffer | null>();
+  const [imagetoDb, setImagetoDb] = useState<File>();
   const nav = useNavigate();
   const [isPending, startTransition] = useTransition();
   const [prodcutName, setProductName] = useState<string>("");
@@ -29,14 +30,21 @@ export default function AddNewProduct() {
     const taux = Number(e.get("taux"));
     const prixEnKilo = Number(e.get("prixEnKilo"));
     const name = prodcutName;
+    const image = imagetoDb;
+
     const createdAt = new Date();
 
     startTransition(async () => {
       try {
         const response = await axios.post(
           "http://localhost:7000/user/addProduct",
-          { taux, name, prixEnKilo, createdAt },
-          { headers: { Authorization: `Bearer ${token}` } }
+          { taux, name, prixEnKilo, createdAt, image },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
         if (response) {
           nav("/connect/product");
@@ -47,23 +55,11 @@ export default function AddNewProduct() {
     });
   };
 
-  const createThumbaiilsImage = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setImage(e.target?.result);
-    };
-    reader.readAsDataURL(file);
-  };
-
   const getImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const allowedType = ["jpeg", "png", "gif", "jpg"];
     if (e.target.files) {
-      const files = e.target.files[0];
-      let filen: string | string[] = files.name;
-      filen = filen.split(".");
-      if (allowedType.indexOf(filen[filen.length - 1]) !== -1) {
-        createThumbaiilsImage(files);
-      }
+      const file = e.target.files[0];
+      setImagetoDb(file);
+      setImage(URL.createObjectURL(file));
     }
   };
   return (
@@ -81,7 +77,12 @@ export default function AddNewProduct() {
             value={prodcutName}
             onChange={getProductName}
             name=""
-            className="w-40 h-10 border border-zinc-950 "
+            className={cn(
+              "w-max px-4 py-2 focus:ring-2 ring-blue-700 focus:outline-none text-white font-mono bg-gray-500 rounded-md cursor-pointer ",
+              {
+                "bg-gray-100": theme !== "dark",
+              }
+            )}
             id=""
           />
 
@@ -89,7 +90,12 @@ export default function AddNewProduct() {
           <input
             type="number"
             name="prixEnKilo"
-            className="w-40 h-10 border border-zinc-950 "
+            className={cn(
+              "w-max px-4 py-2 focus:ring-2 ring-blue-700 focus:outline-none text-white font-mono bg-gray-500 rounded-md cursor-pointer ",
+              {
+                "bg-gray-100": theme !== "dark",
+              }
+            )}
             id=""
           />
           <label htmlFor="name">prix en kilo</label>
@@ -97,7 +103,12 @@ export default function AddNewProduct() {
           <input
             type="number"
             name="taux"
-            className="w-40 h-10 border border-zinc-950 "
+            className={cn(
+              "w-max px-4 py-2 focus:ring-2 ring-blue-700 focus:outline-none text-white font-mono bg-gray-500 rounded-md cursor-pointer ",
+              {
+                "bg-gray-100": theme !== "dark",
+              }
+            )}
             id=""
           />
           <button
@@ -121,6 +132,7 @@ export default function AddNewProduct() {
           <input
             onChange={getImage}
             type="file"
+            accept=".jpeg,.jpg,.png"
             className="hidden"
             name=""
             id="image"

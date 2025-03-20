@@ -1,12 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
- 
 }
 
 datasource db {
@@ -14,45 +7,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product{
-id Int  @id @default(autoincrement())
-name String
-userId Int
-createdAt DateTime @default(now())
-taux Int 
-prixEnKilo  Int
-User User @relation(fields: [userId], references: [id])
+model archives {
+  id        Int      @id @default(autoincrement())
+  produit   String
+  price     Int
+  taux      Int
+  userId    Int
+  createdAt DateTime @default(now())
+  user      user     @relation(fields: [userId], references: [id], map: "Archives_userId_fkey")
 
-
+  @@index([userId], map: "Archives_userId_fkey")
 }
 
-model Image{
-  id Int @id @default(autoincrement())
-  
-}
 
-model Archives{
-  id Int @id @default(autoincrement())
-  produit String
-  price  Int
-createdAt DateTime @default(now())
+model product {
+  id         Int      @id @default(autoincrement())
+  name       String
+  userId     Int
+  createdAt  DateTime @default(now())
+  taux       Int
+  prixEnKilo Int
+  ImageProduct String
+  user       user     @relation(fields: [userId], references: [id], map: "Product_userId_fkey")
 
-  taux  Int
-  userId Int
- User User @relation(fields: [userId], references: [id])
-
+  @@index([userId], map: "Product_userId_fkey")
 }
 
 
 
-model User{
-  id        Int     @id @default(autoincrement())
-  email      String  @unique
-  password  String   
-  products   Product[]
-  archives   Archives[]
+model user {
+  id       Int        @id @default(autoincrement())
+  email    String
+  name  String     @unique(map: "User_email_key")
+  password String
+  archives archives[]
+  product  product[]
 }
-
-
-
-

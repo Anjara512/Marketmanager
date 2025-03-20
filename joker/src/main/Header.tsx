@@ -1,15 +1,24 @@
+import { Modale } from "../components/portal";
 import { cn } from "../lib/utils";
-import { useTheme, useToggleCard } from "../store/zustand";
+import {
+  useTheme,
+  useToggDeconnexionleCard,
+  useToggleCard,
+} from "../store/zustand";
 import { MoonStar, Search, SunIcon } from "lucide-react";
 
 const Header = ({ notconnect }: { notconnect?: boolean }) => {
   const { theme, toggleTheme } = useTheme();
   const { toggleCard } = useToggleCard();
+  const { card } = useToggDeconnexionleCard();
   return (
     <header
-      className={cn("flex justify-between w-full h-max pb-2  bg-slate-300", {
-        "bg-zinc-800": theme === "dark",
-      })}
+      className={cn(
+        "flex justify-between sticky top-0 z-50 w-full h-max pb-2  bg-slate-300",
+        {
+          "bg-zinc-800": theme === "dark",
+        }
+      )}
     >
       <h1 className="uppercase sm:text-3xl md:text-2xl  text-transparent bg-clip-text font-medium  bg-gradient-to-l from-blue-800 to-purple-800">
         market manager
@@ -35,6 +44,7 @@ const Header = ({ notconnect }: { notconnect?: boolean }) => {
             connexion
           </button>
         )}
+        {card && <Modale />}
         {theme === "dark" ? (
           <MoonStar
             style={{ transform: "rotateX(360deg)" }}
