@@ -52,19 +52,20 @@ router.post('/user/addProduct',authentification,upload.single('image'),async(req
 
 
  const user=req.users;
- const {name,createdAt,taux,prixEnKilo}=req.body;
+ const {name,createdAt,taux,prixEnKilo,description}=req.body;
  const imageName=`image-${Date.now()}.webp`;
  const imagePath=path.join(ulpoadDir,imageName);
 
- await compresedImage(req.file.buffer,imagePath)
-
+ 
  if(req.file){
+   await compresedImage(req.file.buffer,imagePath)
   await prisma.product.create({
     data:{
    name:name,
    taux:Number(taux),
    createdAt:createdAt,
    prixEnKilo:Number(prixEnKilo),
+   description:description,
    userId:user.id,
    ImageProduct:`/uploads/${imageName}`
 
@@ -79,6 +80,7 @@ else{
     data:{
       name:name,
       taux:Number(taux),
+      description:description,
       createdAt:createdAt,
       prixEnKilo:Number(prixEnKilo),
       userId:user.id

@@ -86,7 +86,11 @@ const Table = () => {
   const { theme } = useTheme();
 
   return (
-    <div className={cn("flex flex-col bg-zinc-800")}>
+    <div
+      className={cn("flex flex-col bg-zinc-800", {
+        "bg-zinc-300 text-black": theme !== "dark",
+      })}
+    >
       <Header />
       <div className="flex flex-row">
         <Nav />
@@ -104,7 +108,10 @@ const Table = () => {
                 placeholder="Rechercher un produit"
                 name=""
                 className={cn(
-                  "px-4 pl-10 text-white py-6 rounded-md w-3/4 bg-gray-950 font-medium text-sm focus:ring-4 ring-blue-500 focus:outline-none"
+                  "px-4 pl-10 text-white py-6 rounded-md w-3/4 bg-gray-950 font-medium text-sm focus:ring-4 ring-blue-500 focus:outline-none",
+                  {
+                    "bg-gray-200 text-gray-900": theme !== "dark",
+                  }
                 )}
                 id=""
               />

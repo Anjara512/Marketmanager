@@ -1,53 +1,85 @@
 import React from "react";
+import { AngryIcon, Archive, Contact, LogOut, Table2 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 import { cn } from "../lib/utils";
 import { useTheme, useToggDeconnexionleCard } from "../store/zustand";
-import { Archive, BookMarked, Contact, LogOut, Table } from "lucide-react";
-import { NavLink } from "react-router-dom";
 
 const Nav = () => {
   const { theme } = useTheme();
-
   const { toggleCard } = useToggDeconnexionleCard();
+
   return (
     <nav
       className={cn(
-        "flex flex-col sm:w-42 sticky top-10 ml-1 h-screen sm:gap-2 text-white text-md md:text-lg  md:gap-10 w-20 bg-zinc-800 ",
+        "flex flex-col gap-5  w-32 sm:w-42 md:w-42 h-screen  bg-gray-950 ",
         {
-          "bg-zinc-100 text-stone-950": theme !== "dark",
+          "bg-gray-50": theme !== "dark",
         }
       )}
     >
-      <NavLink
-        to={"/connect/product"}
-        className="flex flex-row gap-2 px-2  cursor-pointer  hover:bg-zinc-400 w-full h-max py-2"
-      >
-        <BookMarked />
-        Produit
-      </NavLink>{" "}
-      <NavLink
-        to={"/connect/Archives"}
-        className="flex flex-row gap-2 px-2  cursor-pointer  hover:bg-zinc-400 w-full h-max py-2"
-      >
-        <Archive />
-        Archives
-      </NavLink>{" "}
-      <NavLink
-        to={"/connect/Table"}
-        className="flex flex-row gap-2 md:px-2  cursor-pointer hover:bg-zinc-400  w-full h-max py-2"
-      >
-        <Table />
-        Tables
-      </NavLink>
       <p
-        onClick={toggleCard}
-        className="flex flex-row gap-2 md:px-2  cursor-pointer hover:bg-zinc-400  w-full h-max py-2"
+        className={cn(
+          "flex flex-row  gap-1 text-md  w-full bg-transparent hover:bg-gray-800 md:gap-2 cursor-pointer border-y-1  border-zinc-50/10",
+          {
+            "hover:bg-zinc-50 border-zinc-800": theme !== "dark",
+          }
+        )}
       >
-        <LogOut />
-        Deconnexion
+        <AngryIcon className="mt-1.5" size={15} />
+        <NavLink className={cn("md:text-xl ")} to="/connect/product">
+          produits
+        </NavLink>
       </p>
-      <p className="flex flex-row gap-2 px-2  cursor-pointer hover:bg-zinc-400  w-full h-max py-2">
-        <Contact />
-        Contact
+
+      <p
+        className={cn(
+          "flex flex-row  gap-1 text-md  w-full bg-transparent hover:bg-gray-800 md:gap-2 cursor-pointer border-y-1  border-zinc-50/10",
+          {
+            "hover:bg-zinc-50 border-zinc-800": theme !== "dark",
+          }
+        )}
+      >
+        <Table2 className="mt-1.5" size={15} />
+        <NavLink className={cn("md:text-xl ")} to="/connect/Table">
+          Table
+        </NavLink>
+      </p>
+      <p
+        className={cn(
+          "flex flex-row  gap-1 text-md  w-full bg-transparent hover:bg-gray-800 md:gap-2 cursor-pointer border-y-1  border-zinc-50/10",
+          {
+            "hover:bg-zinc-50 border-zinc-800": theme !== "dark",
+          }
+        )}
+      >
+        <Archive className="mt-1.5" size={15} />
+        <NavLink className={cn("md:text-xl ")} to="/connect/Archives">
+          Archives
+        </NavLink>
+      </p>
+      <p
+        className={cn(
+          "flex flex-row  gap-1 text-md  w-full bg-transparent hover:bg-gray-800 md:gap-2 cursor-pointer border-y-1  border-zinc-50/10",
+          {
+            "hover:bg-zinc-50 border-zinc-800": theme !== "dark",
+          }
+        )}
+      >
+        <Contact className="mt-1.5" size={15} />
+        <NavLink className={cn("md:text-xl ")} to="/connect/product">
+          Contact
+        </NavLink>
+      </p>
+      <p
+        className={cn(
+          "flex flex-row  gap-1 text-md  w-full bg-transparent hover:bg-gray-800 md:gap-2 cursor-pointer border-y-1  border-zinc-50/10",
+          {
+            "hover:bg-zinc-50 border-zinc-800": theme !== "dark",
+          }
+        )}
+      >
+        <LogOut className="mt-1.5" size={15} />
+        <span onClick={toggleCard}>deconnexion</span>
       </p>
     </nav>
   );

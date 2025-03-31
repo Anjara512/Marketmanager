@@ -25,9 +25,10 @@ model product {
   name       String
   userId     Int
   createdAt  DateTime @default(now())
-  taux       Int
-  prixEnKilo Int
-  ImageProduct String
+  taux       Int?
+  description String?
+  prixEnKilo Int?
+  ImageProduct String?
   user       user     @relation(fields: [userId], references: [id], map: "Product_userId_fkey")
 
   @@index([userId], map: "Product_userId_fkey")
@@ -38,7 +39,7 @@ model product {
 model user {
   id       Int        @id @default(autoincrement())
   email    String
-  name  String     @unique(map: "User_email_key")
+  name  String    @unique(map: "User_email_key")
   password String
   archives archives[]
   product  product[]

@@ -43,8 +43,7 @@ export default function Produit() {
         <div className="flex flex-col gap-4  ">
           <div className="w-full flex flex-row justify-between">
             <h1 className="flex  ">les produit disponible</h1>
-
-            <button className="w-max h-max hover:outline-none hover:ring-4 ring-blue-800 bg-blue-500 px-4 py-2 rounded-full cursor-pointer ">
+            <button className="w-max h-max hover:outline-none hover:ring-4 ring-blue-800 bg-blue-500 md:px-4 text-sm md:text-md  md:py-2 rounded-full cursor-pointer ">
               <NavLink to={"/connect/addProduct"}>
                 Ajouter de nouveau produit
               </NavLink>
@@ -71,11 +70,13 @@ export default function Produit() {
                     key={index}
                   >
                     <div className="flex flex-col gap-2">
-                      <img
-                        src={`http://localhost:7000${el.ImageProduct}`}
-                        className="md:w-20 w-10 h-10 md:h-20 rounded-md "
-                        alt="image du produit"
-                      />
+                      {el.ImageProduct && (
+                        <img
+                          src={`http://localhost:7000${el.ImageProduct}`}
+                          className="md:w-20 w-10 h-10 md:h-20 rounded-md "
+                          alt="image du produit"
+                        />
+                      )}
 
                       {el.name}
                     </div>

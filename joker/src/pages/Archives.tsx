@@ -71,8 +71,7 @@ const Archives = () => {
 
           <div className="flex flex-row">
             <ArrowLeft
-              className="h-full cursor-pointer "
-              size={50}
+              className="h-full cursor-pointer md:text-3xl "
               onClick={decrementeMois}
             ></ArrowLeft>
             <ul
@@ -83,7 +82,7 @@ const Archives = () => {
                 }
               )}
             >
-              {date.map((el, index) => (
+              {date.map((_, index) => (
                 <NavLink
                   to={`/connect/Archives/:${mois + 1},${index + 1}`}
                   className={cn(
@@ -111,8 +110,7 @@ const Archives = () => {
             </ul>
             {mois !== new Date().getMonth() && (
               <ArrowRight
-                className="h-full cursor-pointer "
-                size={50}
+                className="h-full cursor-pointer md:text-3xl  "
                 onClick={IncrementeMois}
               />
             )}

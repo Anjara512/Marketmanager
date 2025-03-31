@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Modale } from "../components/portal";
 import { cn } from "../lib/utils";
 import {
@@ -6,11 +7,56 @@ import {
   useToggleCard,
 } from "../store/zustand";
 import { MoonStar, Search, SunIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ notconnect }: { notconnect?: boolean }) => {
   const { theme, toggleTheme } = useTheme();
+  const [globalSearch, setGlobalSearch] = useState(" ");
+  const [globaLink, setGlobalLink] = useState([""]);
   const { toggleCard } = useToggleCard();
   const { card } = useToggDeconnexionleCard();
+
+  const nav = useNavigate();
+  const GlobaChoice = [
+    "product",
+    "archives",
+    "contact",
+    "Ajouter de nouveau produit",
+    "tables",
+    "vendre",
+  ];
+  const navigateTo = (e: string) => {
+    switch (e) {
+      case "product":
+        nav("/connect/product");
+        break;
+      case "archives":
+        nav("/connect/Archives");
+        break;
+      case "contact":
+        nav("/connect/contact");
+        break;
+      case "table":
+        nav("/connect/Table");
+        break;
+
+      default:
+        break;
+    }
+  };
+  const getNav = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setGlobalSearch(e.target.value);
+    if (globalSearch.trim()) {
+      setGlobalLink(
+        GlobaChoice.filter((el) => {
+          return el.startsWith(globalSearch.trim());
+        })
+      );
+    } else {
+      setGlobalLink([" "]);
+    }
+  };
+
   return (
     <header
       className={cn(
@@ -24,18 +70,42 @@ const Header = ({ notconnect }: { notconnect?: boolean }) => {
         market manager
       </h1>
       <span className="flex flex-row gap-5 ml-4 mt-2 ">
-        <div className="flex flex-row ">
-          <Search className="absolute text-white  mt-2 ml-2" size={20}></Search>
-          <input
-            type="search"
-            className={cn(
-              "rounded-md sm:w-full  text-white focus:outline-none border-white bg-zinc-950  pl-8  py-1 focus:ring-4 focus:ring-blue-400"
-            )}
-            name=""
-            placeholder="search..."
-            id=""
-          />
-        </div>
+        {!notconnect && (
+          <div className="flex flex-col">
+            <div className="flex flex-row ">
+              <Search
+                values={globalSearch}
+                className="absolute text-white  mt-2 ml-2"
+                size={20}
+              ></Search>
+
+              <input
+                type="search"
+                onChange={getNav}
+                className={cn(
+                  "rounded-md sm:w-full  text-white focus:outline-none border-white bg-zinc-950  pl-8  py-1 focus:ring-4 focus:ring-blue-400"
+                )}
+                name=""
+                placeholder="search..."
+                id=""
+              />
+            </div>
+            {globalSearch.trim()
+              ? globaLink.map((el, index) => (
+                  <span
+                    className={cn("text-white bg-zinc-900", {
+                      "text-black": theme !== "dark",
+                    })}
+                    onClick={() => navigateTo(el)}
+                    key={index}
+                  >
+                    {el}
+                  </span>
+                ))
+              : null}
+          </div>
+        )}
+
         {notconnect && (
           <button
             className="w-max px-4 py-2 bg-green-500 cursor-pointer rounded-md"

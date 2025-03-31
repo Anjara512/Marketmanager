@@ -29,6 +29,7 @@ export default function AddNewProduct() {
   const save = async (e: FormData) => {
     const taux = Number(e.get("taux"));
     const prixEnKilo = Number(e.get("prixEnKilo"));
+    const description = e.get("description") as string;
     const name = prodcutName;
     const image = imagetoDb;
 
@@ -38,7 +39,7 @@ export default function AddNewProduct() {
       try {
         const response = await axios.post(
           "http://localhost:7000/user/addProduct",
-          { taux, name, prixEnKilo, createdAt, image },
+          { taux, name, prixEnKilo, createdAt, image, description },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -65,11 +66,14 @@ export default function AddNewProduct() {
   return (
     <div
       className={cn("flex flex-col bg-zinc-950 h-screen text-stone-100", {
-        "bg-zinc-50": theme !== "dark",
+        "bg-zinc-50 text-zinc-950": theme !== "dark",
       })}
     >
       <Header />
-      <form action={save} className="flex flex-row justify-between border">
+      <form
+        action={save}
+        className="flex md:flex-row flex-col  h-screen overflow-y-scroll justify-between border"
+      >
         <div className="flex flex-col gap-5 ">
           <label htmlFor="name">nom du produit</label>
           <input
@@ -78,9 +82,10 @@ export default function AddNewProduct() {
             onChange={getProductName}
             name=""
             className={cn(
-              "w-max px-4 py-2 focus:ring-2 ring-blue-700 focus:outline-none text-white font-mono bg-gray-500 rounded-md cursor-pointer ",
+              "w-max px-4 py-2 focus:ring-2 ring-blue-700 focus:outline-none text-white font-mono bg-gray-800 rounded-md cursor-pointer ",
               {
-                "bg-gray-100": theme !== "dark",
+                "bg-zinc-200 border-black border-1 text-black":
+                  theme !== "dark",
               }
             )}
             id=""
@@ -91,9 +96,10 @@ export default function AddNewProduct() {
             type="number"
             name="prixEnKilo"
             className={cn(
-              "w-max px-4 py-2 focus:ring-2 ring-blue-700 focus:outline-none text-white font-mono bg-gray-500 rounded-md cursor-pointer ",
+              "w-max px-4 py-2 focus:ring-2 ring-blue-700 focus:outline-none text-white font-mono bg-gray-800 rounded-md cursor-pointer ",
               {
-                "bg-gray-100": theme !== "dark",
+                "bg-zinc-200 border-black border-1 text-black":
+                  theme !== "dark",
               }
             )}
             id=""
@@ -104,9 +110,10 @@ export default function AddNewProduct() {
             type="number"
             name="taux"
             className={cn(
-              "w-max px-4 py-2 focus:ring-2 ring-blue-700 focus:outline-none text-white font-mono bg-gray-500 rounded-md cursor-pointer ",
+              "w-max px-4 py-2 focus:ring-2 ring-blue-700 focus:outline-none text-white font-mono bg-gray-800 rounded-md cursor-pointer ",
               {
-                "bg-gray-100": theme !== "dark",
+                "bg-zinc-200 border-black border-1 text-black":
+                  theme !== "dark",
               }
             )}
             id=""
@@ -141,7 +148,7 @@ export default function AddNewProduct() {
           <div className="flex flex-col gap-4">
             <label htmlFor="">description du produit</label>
             <textarea
-              name=""
+              name="description"
               className="resize-none w-62 h-30 rounded-md bg-zinc-600 border-2 outline-none border-lime-500 "
               id=""
             ></textarea>
